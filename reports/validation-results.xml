@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><VALIDATION_RESULTS>  <VALIDATION>
+    <RESUTL>PASS</RESUTL>
+    <SCENARIO>adds Sauce Labs Backpack to the cart</SCENARIO>
+    <TIMELAPS>1205 ms</TIMELAPS>
+  </VALIDATION>
+  <VALIDATION>
+    <RESUTL>TIMEOUT</RESUTL>
+    <SCENARIO>adds Sauce Labs Backpack to the cart</SCENARIO>
+    <TIMELAPS>32336 ms</TIMELAPS>
+  </VALIDATION>
+</VALIDATION_RESULTS>
