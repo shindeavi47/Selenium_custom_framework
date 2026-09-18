@@ -1,19 +1,27 @@
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.TimeoutException;
 
 import utils.ValidationResults;
 
 class AddToCartCheck {
     public static void main(String[] args) {
-        WebDriver driver = new ChromeDriver();
+    WebDriver driver = new ChromeDriver(new ChromeOptions()
+        .addArguments("--disable-save-password-bubble")
+        .setExperimentalOption("prefs", Map.of(
+            "credentials_enable_service", false,
+            "profile.password_manager_enabled", false,
+            "profile.password_manager_leak_detection", false)));
         try {
             driver.manage().window().maximize();
             driver.get("https://www.saucedemo.com/");
@@ -23,9 +31,13 @@ class AddToCartCheck {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 
             pageActions.loginPage("standard_user", "secret_sauce");
+            
+            acceptAlertIfPresent(driver);
+
             wait.until(ExpectedConditions.visibilityOfElementLocated(
                     By.cssSelector("[data-test='inventory-container']")));
-            acceptAlertIfPresent(driver);
+
+            // acceptAlertIfPresent(driver);
 
             pageActions.validateAction(
                     "Adds Sauce Labs Backpack to the cart",
@@ -60,8 +72,9 @@ class AddToCartCheck {
                     .until(ExpectedConditions.alertIsPresent());
             System.out.println("Accepted warning: " + alert.getText());
             alert.accept();
-        } catch (NoAlertPresentException exception) {
+        } catch (TimeoutException | NoAlertPresentException exception) {
             // No browser alert was displayed.
-        }
+        }       
     }
+
 }
